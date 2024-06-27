@@ -21,11 +21,13 @@ public class BaseConnaissance {
     private String titre;
     private String contenu;
     private String categorie;
+    private Long userId; // Ajout de l'ID de l'utilisateur
 
     // Constructeur avec champs
-    public BaseConnaissance(String titre, String contenu, String categorie) {
+    public BaseConnaissance(String titre, String contenu, String categorie, Long userId) {
         this.titre = titre;
         this.contenu = contenu;
         this.categorie = categorie;
+        this.userId = userId;
     }
 }

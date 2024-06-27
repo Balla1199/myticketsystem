@@ -8,5 +8,6 @@ public interface BaseConnaissanceService {
     BaseConnaissance save(BaseConnaissance baseConnaissance);
     List<BaseConnaissance> findAll();
     BaseConnaissance findById(int id);
+    BaseConnaissance update(BaseConnaissance baseConnaissance);
     void deleteById(int id);
 }

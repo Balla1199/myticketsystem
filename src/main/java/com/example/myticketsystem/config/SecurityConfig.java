@@ -29,13 +29,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF protection is disabled for simplicity; enable as needed
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("//api/admins/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/apprenants/**").hasRole("ADMIN")
                         .requestMatchers("/api/tickets/create").hasRole("APPRENANT")
                         .requestMatchers("/api/tickets/read").hasAnyRole("APPRENANT", "FORMATEUR")
-                        .requestMatchers("/api/base-connaissances/create", "/api/base-connaissances/update/", "/api/base-connaissances/delete").hasRole("FORMATEUR")
-                        .requestMatchers("/api/base-connaissances/read").hasAnyRole("FORMATEUR", "APPRENANT")
-                        .requestMatchers("/api/responses/create/{ticketId}", "/api/responses/update/{ticketId}", "/api/responses/delete/{ticketId}").hasRole("FORMATEUR")
-                        .requestMatchers("/api/responses/read").hasAnyRole("FORMATEUR", "APPRENANT")
+                        .requestMatchers("/api/baseconnaissance/create", "/api/baseconnaissance/update/", "/api/baseconnaissance/delete").hasRole("FORMATEUR")
+                        .requestMatchers("/api/baseconnaissance/all").hasAnyRole("FORMATEUR", "APPRENANT")
+                        .requestMatchers("/api/responses/create", "/api/responses/update/{Id}", "/responses/delete/{Id}").hasRole("FORMATEUR")
+                        .requestMatchers("/api/responses/read/{Id}").hasAnyRole("FORMATEUR", "APPRENANT")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());

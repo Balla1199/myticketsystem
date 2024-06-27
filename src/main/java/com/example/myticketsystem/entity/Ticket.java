@@ -33,8 +33,9 @@ public class Ticket {
     @Column(name = "resolved_at")
     private Date resolvedAt; // Date de résolution, initialisée à null par défaut
 
-    // Méthode pour mettre à jour la date de résolution automatiquement
+    // Méthode pour mettre à jour la date de résolution et le statut automatiquement
     public void resolveTicket() {
         this.resolvedAt = new Date();
+        this.status = "RESOLU";
     }
 }

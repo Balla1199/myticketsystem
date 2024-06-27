@@ -4,6 +4,7 @@ import com.example.myticketsystem.entity.Formateur;
 import com.example.myticketsystem.repository.FormateurRepository;
 import com.example.myticketsystem.service.FormateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +12,15 @@ import java.util.Optional;
 
 @Service
 public class FormateurServiceImpl implements FormateurService {
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     private FormateurRepository formateurRepository;
 
     @Override
     public Formateur save(Formateur formateur) {
+        formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
         return formateurRepository.save(formateur);
     }
 

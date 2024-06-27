@@ -1,22 +1,42 @@
 package com.example.myticketsystem.controller;
 
 import com.example.myticketsystem.entity.Ticket;
+import com.example.myticketsystem.entity.User;
+import com.example.myticketsystem.service.EmailService;
 import com.example.myticketsystem.service.TicketService;
+import com.example.myticketsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
+
     @Autowired
     private TicketService ticketService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/create")
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
-        return ResponseEntity.ok(ticketService.save(ticket));
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByEmail(userDetails.getUsername());
+        ticket.setUser(user);
+        ticket.setCreatedAt(new Date()); // Set creation date
+
+        Ticket savedTicket = ticketService.save(ticket);
+
+
+        return ResponseEntity.ok(savedTicket);
     }
 
     @GetMapping("/read")

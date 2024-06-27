@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/base-connaissances")
+@RequestMapping("/api/baseconnaissance")
 public class BaseConnaissanceController {
 
     @Autowired
@@ -17,23 +17,30 @@ public class BaseConnaissanceController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseConnaissance> createBaseConnaissance(@RequestBody BaseConnaissance baseConnaissance) {
-        return ResponseEntity.ok(baseConnaissanceService.save(baseConnaissance));
+        BaseConnaissance createdBaseConnaissance = baseConnaissanceService.save(baseConnaissance);
+        return ResponseEntity.ok(createdBaseConnaissance);
     }
 
-    @GetMapping("/read")
+    @GetMapping("/all")
     public ResponseEntity<List<BaseConnaissance>> getAllBaseConnaissances() {
-        return ResponseEntity.ok(baseConnaissanceService.findAll());
+        List<BaseConnaissance> baseConnaissances = baseConnaissanceService.findAll();
+        return ResponseEntity.ok(baseConnaissances);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BaseConnaissance> getBaseConnaissanceById(@PathVariable int id) {
-        return ResponseEntity.ok(baseConnaissanceService.findById(id));
+        BaseConnaissance baseConnaissance = baseConnaissanceService.findById(id);
+        if (baseConnaissance != null) {
+            return ResponseEntity.ok(baseConnaissance);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseConnaissance> updateBaseConnaissance(@PathVariable int id, @RequestBody BaseConnaissance baseConnaissance) {
-        baseConnaissance.setId(id);
-        return ResponseEntity.ok(baseConnaissanceService.save(baseConnaissance));
+    public ResponseEntity<BaseConnaissance> updateBaseConnaissance(@RequestBody BaseConnaissance baseConnaissance) {
+        BaseConnaissance updatedBaseConnaissance = baseConnaissanceService.update(baseConnaissance);
+        return ResponseEntity.ok(updatedBaseConnaissance);
     }
 
     @DeleteMapping("/delete/{id}")
